@@ -20,16 +20,16 @@ def view():
         for line in f.readlines():
             data = line.rstrip()
             user, password = data.split(" | ")
-            print("User:", user, "| Password:",
+            print("User:", fer.decrypt(user.encode()).decode(), "| Password:",
                   fer.decrypt(password.encode()).decode())
 
 
 def add():
     name = input("Account Name: ")
     pwd = input("Password: ")
-
     with open("passwords.txt", "a") as f:
-        f.write(name + " | " + fer.encrypt(pwd.encode()).decode() + "\n")
+        f.write(fer.encrypt(name.encode()).decode() + " | " +
+                fer.encrypt(pwd.encode()).decode() + "\n")
 
 
 filesize = os.path.getsize("passwords.txt")
@@ -37,6 +37,7 @@ if filesize == 0:
     write_key()
 key = load_key()
 fer = Fernet(key)
+
 
 while True:
     mode = input(
